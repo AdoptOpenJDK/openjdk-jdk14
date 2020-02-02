@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -19,21 +19,25 @@
  * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
  * or visit www.oracle.com if you need additional information or have any
  * questions.
+ *
  */
 
+#ifndef SHARE_JFR_SUPPORT_JFRMETHODLOOKUP_HPP
+#define SHARE_JFR_SUPPORT_JFRMETHODLOOKUP_HPP
 
-package org.graalvm.compiler.replacements.test;
+#include "jfr/utilities/jfrTypes.hpp"
+#include "memory/allocation.hpp"
 
-import org.junit.Test;
+class InstanceKlass;
+class Method;
 
-public class NullBytecodeExceptionTest extends BytecodeExceptionTest {
+class JfrMethodLookup : AllStatic {
+ public:
+  static const Method* lookup(const InstanceKlass* ik, traceid method_id);
+  static traceid method_id(const Method* method);
+  static int method_id_num(traceid method_id);
+  static traceid klass_id(const Method* method);
+  static traceid klass_id(traceid method_id);
+};
 
-    public static void nullSnippet(Object obj) {
-        obj.toString();
-    }
-
-    @Test
-    public void testNullPointerException() {
-        test("nullSnippet", (Object) null);
-    }
-}
+#endif // SHARE_JFR_SUPPORT_JFRMETHODLOOKUP_HPP
